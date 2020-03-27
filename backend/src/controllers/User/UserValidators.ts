@@ -33,12 +33,18 @@ export interface IUserUpdate extends Partial<Omit<IUserCreate, 'password'>> {
 }
 
 export const UserUpdateValidator = joi.object({
-  id: joi.number().required(),
+  id: joi
+    .number()
+    .min(1)
+    .required(),
   name: joi.string(),
   email: joi.string().email(),
   birth: joi.date(),
   phone: joi.string().pattern(new RegExp('^[0-9]{11,15}$')),
-  roles: joi.options([Roles.Client, Roles.Realtor, Roles.Admin]),
+  roles: joi
+    .number()
+    .min(Roles.Client)
+    .max(Roles.Admin),
 });
 
 export interface IUserDelete {
@@ -46,7 +52,10 @@ export interface IUserDelete {
 }
 
 export const UserDeleteValidator = joi.object({
-  id: joi.number().required(),
+  id: joi
+    .number()
+    .min(1)
+    .required(),
 });
 
 export interface IUpdatePassword {
@@ -56,7 +65,10 @@ export interface IUpdatePassword {
 }
 
 export const UpdatePasswordValidator = joi.object({
-  id: joi.number().required(),
+  id: joi
+    .number()
+    .min(1)
+    .required(),
   oldPassword: joi.string().required(),
   newPassword: joi.string().required(),
 });

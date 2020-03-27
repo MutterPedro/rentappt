@@ -14,6 +14,8 @@
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test",
+    "test:watch": "tsdx test --watch",
+    "test:coverage": "tsdx test --coverage",
     "lint": "tsdx lint",
     "prepare": "tsdx build"
   },
@@ -28,6 +30,11 @@
     "semi": true,
     "singleQuote": true,
     "trailingComma": "es5"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "./test/setupTests.ts"
+    ]
   },
   "name": "backend",
   "author": "mutterpedro",
@@ -56,12 +63,14 @@
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "compression": "^1.7.4",
+    "cors": "^2.8.5",
     "digjoy": "^0.3.0",
     "dotenv": "^8.2.0",
     "helmet": "^3.22.0",
     "http-status": "^1.4.2",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
+    "mysql2": "^2.1.0",
     "pino": "^5.17.0",
     "sequelize": "^5.21.5"
   }

@@ -3,7 +3,7 @@ import { UNPROCESSABLE_ENTITY, FORBIDDEN, NOT_FOUND } from 'http-status';
 import { Roles } from '../constants/Roles';
 import { User as UserDAO } from '../models';
 import ResponseError from '../utils/ResponseError';
-import { generateToken } from 'utils/jwt';
+import { generateToken } from '../utils/jwt';
 
 export interface IUser {
   name: string;
