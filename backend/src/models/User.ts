@@ -20,7 +20,7 @@ type UserModelStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): UserModel;
 };
 
-const User = <UserModelStatic>DB.getInstance().define(
+const User = DB.getInstance().define(
   'user',
   {
     id: {
@@ -48,6 +48,6 @@ const User = <UserModelStatic>DB.getInstance().define(
   {
     indexes: [{ unique: true, fields: ['email', 'password'] }],
   }
-);
+) as UserModelStatic;
 
 export default User;

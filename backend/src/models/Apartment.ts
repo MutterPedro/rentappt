@@ -27,7 +27,7 @@ type ApartmentModelStatic = typeof Model & {
   };
 };
 
-const Apartment = <ApartmentModelStatic>DB.getInstance().define('apartment', {
+const Apartment = DB.getInstance().define('apartment', {
   id: {
     primaryKey: true,
     type: INTEGER.UNSIGNED,
@@ -41,7 +41,7 @@ const Apartment = <ApartmentModelStatic>DB.getInstance().define('apartment', {
   latitude: { type: FLOAT, allowNull: false },
   longitude: { type: FLOAT, allowNull: false },
   available: { type: BOOLEAN, allowNull: false },
-});
+}) as ApartmentModelStatic;
 
 Apartment.belongsTo(User, { foreignKey: 'realtorId' });
 User.hasMany(Apartment, { foreignKey: 'realtorId' });
