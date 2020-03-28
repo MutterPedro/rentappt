@@ -1,23 +1,33 @@
-import { Model, STRING, INTEGER, DATE } from 'sequelize';
+import { Model, STRING, INTEGER, DATE, BuildOptions } from 'sequelize';
 
 import DB from '../config/DB';
 import { Roles } from '../constants/Roles';
 
-class User extends Model {
-  public id!: number;
+export interface UserModel extends Model {
+  readonly id: number;
+  name: string;
+  email: string;
+  password: string;
+  birth?: Date;
+  phone: string;
+  role: Roles;
 
-  public name!: string;
-  public email!: string;
-  public password!: string;
-  public birth?: Date;
-  public phone!: string;
-  public role!: Roles;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
 }
-User.init(
+
+type UserModelStatic = typeof Model & {
+  new (values?: object, options?: BuildOptions): UserModel;
+};
+
+const User = <UserModelStatic>DB.getInstance().define(
+  'user',
   {
+    id: {
+      primaryKey: true,
+      type: INTEGER.UNSIGNED,
+      autoIncrement: true,
+    },
     name: { type: STRING, allowNull: false },
     email: { type: STRING, unique: true, allowNull: false, validate: { isEmail: true } },
     password: { type: STRING, allowNull: false, validate: { min: 6, isAlphanumeric: true } },
@@ -37,8 +47,6 @@ User.init(
   },
   {
     indexes: [{ unique: true, fields: ['email', 'password'] }],
-    sequelize: DB.getInstance(),
-    modelName: 'user',
   }
 );
 

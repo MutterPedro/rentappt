@@ -1,4 +1,4 @@
-import jwt, { JsonWebTokenError } from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 
 import { JWT_SALT } from './environment';
 
@@ -28,7 +28,7 @@ export function parseToken(token: string): Promise<number> {
         return;
       }
 
-      reject(new JsonWebTokenError('Malformed token'));
+      reject(new jwt.JsonWebTokenError('Malformed token'));
     });
   });
 }

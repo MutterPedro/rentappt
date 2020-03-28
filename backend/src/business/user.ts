@@ -1,11 +1,15 @@
-import { UNPROCESSABLE_ENTITY, FORBIDDEN, NOT_FOUND } from 'http-status';
+import { UNPROCESSABLE_ENTITY, FORBIDDEN, UNAUTHORIZED } from 'http-status';
 
 import { Roles } from '../constants/Roles';
 import { User as UserDAO } from '../models';
 import ResponseError from '../utils/ResponseError';
 import { generateToken } from '../utils/jwt';
+import { UserModel } from 'models/User';
 
 export interface IUser {
+  id?: number;
+  updatedAt?: Date;
+  createdAt?: Date;
   name: string;
   email: string;
   password: string;
@@ -17,7 +21,7 @@ export interface IUser {
 type UserWithoutPassword = Omit<IUser, 'password'>;
 
 export async function createNewUser(params: IUser): Promise<UserWithoutPassword> {
-  const instance: UserDAO = await UserDAO.create(params);
+  const instance: UserModel = await UserDAO.create(params);
 
   const user = instance.get({ plain: true }) as IUser;
   delete user.password;
@@ -32,8 +36,8 @@ export async function updateUser(id: number, params: Partial<UserWithoutPassword
     throw new ResponseError(UNPROCESSABLE_ENTITY, 'Unable to find an "user" with the given ID');
   }
 
-  const instance: UserDAO = await UserDAO.findByPk(id, { attributes: { exclude: ['password'] } });
-  const user = instance.get({ plain: true }) as UserWithoutPassword;
+  const instance: UserModel | null = await UserDAO.findByPk(id, { attributes: { exclude: ['password'] } });
+  const user = instance!.get({ plain: true }) as UserWithoutPassword;
 
   return user;
 }
@@ -46,7 +50,7 @@ export async function deleteUser(id: number): Promise<void> {
 }
 
 export async function updatePassword(id: number, oldPassword: string, newPassword: string): Promise<void> {
-  const instance: UserDAO = await UserDAO.findByPk(id);
+  const instance: UserModel | null = await UserDAO.findByPk(id);
   if (!instance) {
     throw new ResponseError(UNPROCESSABLE_ENTITY, 'Unable to find an "user" with the given ID');
   }
@@ -60,12 +64,13 @@ export async function updatePassword(id: number, oldPassword: string, newPasswor
 }
 
 export async function loginUser(email: string, password: string): Promise<string> {
-  const instance: UserDAO = await UserDAO.findOne({
+  const instance: UserModel | null = await UserDAO.findOne({
     where: { email, password },
     attributes: { exclude: ['password'] },
   });
+
   if (!instance) {
-    throw new ResponseError(NOT_FOUND, 'E-mail or password incorrect');
+    throw new ResponseError(UNAUTHORIZED, 'E-mail or password incorrect');
   }
 
   const user = instance.get({ plain: true }) as UserWithoutPassword & { id: number };

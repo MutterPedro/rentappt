@@ -1,4 +1,4 @@
-import httpStatus from 'http-status';
+import * as httpStatus from 'http-status';
 
 export default class ResponseError extends Error {
   readonly status: number;

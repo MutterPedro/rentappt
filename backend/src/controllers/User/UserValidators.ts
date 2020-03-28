@@ -1,4 +1,4 @@
-import joi from '@hapi/joi';
+import * as joi from '@hapi/joi';
 import { Roles } from '../../constants/Roles';
 
 export interface IUserCreate {
@@ -88,4 +88,14 @@ export const UserLoginValidator = joi.object({
     .alphanum()
     .min(6)
     .required(),
+});
+
+export interface IListAvailableApartments {
+  offset?: number;
+  limit?: number;
+}
+
+export const ListAvailableApartmentsValidator = joi.object({
+  offset: joi.number().min(0),
+  limit: joi.number().min(1),
 });

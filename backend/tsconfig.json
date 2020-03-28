@@ -1,13 +1,15 @@
 {
   "include": ["src", "types", "test"],
+  "exclude": ["test/setupTests.ts", "*/**/*.test.ts"],
   "compilerOptions": {
-    "module": "esnext",
-    "lib": ["dom", "esnext"],
+    "module": "CommonJS",
+    "lib": ["ESNext"],
     "target": "ES5",
     "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
     "rootDir": "./src",
+    "outDir": "./dist",
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -24,8 +26,10 @@
     "paths": {
       "*": ["src/*", "node_modules/*"]
     },
-    "jsx": "react",
     "esModuleInterop": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "pretty": true
   }
 }

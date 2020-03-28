@@ -2,6 +2,7 @@ import { Controller, POST, PUT, DELETE, GET, PATCH } from 'digjoy';
 
 import { Roles } from '../../constants/Roles';
 import { createNewUser, updateUser, deleteUser, updatePassword, loginUser } from '../../business/user';
+import { listApartments } from '../../business/apartment';
 import {
   IUserCreate,
   UserCreateValidator,
@@ -13,6 +14,8 @@ import {
   IUpdatePassword,
   IUserLogin,
   UserLoginValidator,
+  ListAvailableApartmentsValidator,
+  IListAvailableApartments,
 } from './UserValidators';
 
 @Controller('/user')
@@ -42,6 +45,8 @@ export default class UserController {
     return loginUser(email, password);
   }
 
-  @GET('/apartments')
-  listAvailableApartments() {}
+  @GET('/apartments', ListAvailableApartmentsValidator)
+  listAvailableApartments({ offset, limit }: IListAvailableApartments) {
+    return listApartments(true, limit, offset);
+  }
 }

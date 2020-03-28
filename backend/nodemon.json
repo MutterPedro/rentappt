@@ -1,0 +1,6 @@
+{
+  "watch": ["dist"],
+  "ext": "js ts tsx",
+  "exec": "TS_NODE_PROJECT=tsconfig.json node --inspect=0.0.0.0:9229 ./dist/index.js",
+  "delay": "5000"
+}

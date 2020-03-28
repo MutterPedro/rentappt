@@ -35,15 +35,15 @@ services:
       - 3000:3000
       - 9229:9229
     volumes:
-      - ./src:/usr/app/src:delegated
+      - ./backend/src:/usr/app/src:delegated
     environment:
-      ENV: development
+      NODE_ENV: development
       PORT: 3000
       DB_HOST: mysql
       DB_NAME: rental_app
-      DB_USERNAME: tester1
+      DB_USER: tester1
       DB_PASSWORD: test
-      HASH_SALT: T3ST
+      JWT_SALT: T3ST
 
 volumes:
   mysqldata:

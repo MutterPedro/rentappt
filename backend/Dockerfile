@@ -3,9 +3,7 @@ FROM node:12.16-alpine as base
 EXPOSE 3000
 WORKDIR /usr/app/
 
-RUN npm i -g yarn@1.22.0
-
-COPY package.json package-lock.json* ./
+COPY package.json yarn.lock* ./
 RUN yarn config list
 RUN yarn install --frozen-lockfile && yarn cache clean --force
 
@@ -16,7 +14,7 @@ EXPOSE 9229
 ENV NODE_ENV development
 COPY ./ ./
 VOLUME ./src:/usr/app/src:delegated
-CMD ["yarn", "start"]
+CMD ["yarn", "dev"]
 
 ########## PROD STAGE ##########
 
