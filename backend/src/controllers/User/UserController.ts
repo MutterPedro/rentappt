@@ -46,7 +46,7 @@ export default class UserController {
   }
 
   @GET('/apartments', ListAvailableApartmentsValidator)
-  listAvailableApartments({ offset, limit }: IListAvailableApartments) {
-    return listApartments(true, limit, offset);
+  listAvailableApartments(filter: IListAvailableApartments) {
+    return listApartments({ available: true, ...filter });
   }
 }

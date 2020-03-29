@@ -43,7 +43,7 @@ const Apartment = DB.getInstance().define('apartment', {
   available: { type: BOOLEAN, allowNull: false },
 }) as ApartmentModelStatic;
 
-Apartment.belongsTo(User, { foreignKey: 'realtorId' });
-User.hasMany(Apartment, { foreignKey: 'realtorId' });
+Apartment.belongsTo(User, { foreignKey: 'realtorId', as: 'realtor' });
+User.hasMany(Apartment, { foreignKey: 'realtorId', as: 'realtor' });
 
 export default Apartment;

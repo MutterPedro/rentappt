@@ -36,10 +36,9 @@ export async function updateUser(id: number, params: Partial<UserWithoutPassword
     throw new ResponseError(UNPROCESSABLE_ENTITY, 'Unable to find an "user" with the given ID');
   }
 
-  const instance: UserModel | null = await UserDAO.findByPk(id, { attributes: { exclude: ['password'] } });
-  const user = instance!.get({ plain: true }) as UserWithoutPassword;
+  const user = await getUserById(id, ['password']);
 
-  return user;
+  return user!;
 }
 
 export async function deleteUser(id: number): Promise<void> {
@@ -50,11 +49,10 @@ export async function deleteUser(id: number): Promise<void> {
 }
 
 export async function updatePassword(id: number, oldPassword: string, newPassword: string): Promise<void> {
-  const instance: UserModel | null = await UserDAO.findByPk(id);
-  if (!instance) {
+  const user: IUser | null = await getUserById(id);
+  if (!user) {
     throw new ResponseError(UNPROCESSABLE_ENTITY, 'Unable to find an "user" with the given ID');
   }
-  const user = instance.get({ plain: true }) as IUser;
 
   if (user.password !== oldPassword) {
     throw new ResponseError(FORBIDDEN, 'Current password provided is not correct');
@@ -73,8 +71,23 @@ export async function loginUser(email: string, password: string): Promise<string
     throw new ResponseError(UNAUTHORIZED, 'E-mail or password incorrect');
   }
 
-  const user = instance.get({ plain: true }) as UserWithoutPassword & { id: number };
-  const token = await generateToken(user.id);
+  const user = instance.get({ plain: true }) as UserWithoutPassword;
+  const token = await generateToken(user.id!);
 
   return token;
+}
+
+export async function getUserById(id: number, exclude: (keyof IUser)[] = []): Promise<IUser | null> {
+  let instance: UserModel | null;
+  if (exclude && exclude[0]) {
+    instance = await UserDAO.findByPk(id, { attributes: { exclude } });
+  } else {
+    instance = await UserDAO.findByPk(id);
+  }
+
+  if (instance) {
+    return instance.get({ plain: true }) as IUser;
+  }
+
+  return null;
 }

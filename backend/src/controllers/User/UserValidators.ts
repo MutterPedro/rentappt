@@ -91,11 +91,26 @@ export const UserLoginValidator = joi.object({
 });
 
 export interface IListAvailableApartments {
-  offset?: number;
+  size?: [number, number];
+  price?: [number, number];
+  rooms?: [number, number];
   limit?: number;
+  offset?: number;
 }
 
 export const ListAvailableApartmentsValidator = joi.object({
   offset: joi.number().min(0),
   limit: joi.number().min(1),
+  size: joi
+    .array()
+    .items(joi.number().min(1))
+    .length(2),
+  price: joi
+    .array()
+    .items(joi.number().min(1))
+    .length(2),
+  rooms: joi
+    .array()
+    .items(joi.number().min(1))
+    .length(2),
 });

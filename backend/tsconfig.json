@@ -1,6 +1,5 @@
 {
-  "include": ["src", "types", "test"],
-  "exclude": ["test/setupTests.ts", "*/**/*.test.ts"],
+  "include": ["src", "types"],
   "compilerOptions": {
     "module": "CommonJS",
     "lib": ["ESNext"],
