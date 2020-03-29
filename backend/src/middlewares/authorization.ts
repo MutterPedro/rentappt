@@ -21,7 +21,6 @@ export default function authorization(role: Roles): RequestHandler {
         const user = await getUserById(userId, ['password']);
 
         if (user && user.role >= role) {
-          //@ts-ignore
           req.body[SESSION] = userId;
           next();
         } else {

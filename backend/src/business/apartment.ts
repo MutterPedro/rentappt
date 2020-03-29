@@ -2,8 +2,8 @@ import { Op, WhereAttributeHash } from 'sequelize';
 import { UNPROCESSABLE_ENTITY } from 'http-status';
 
 import { User, Apartment as ApartmentDAO } from '../models';
-import { UserModel } from '../models/User';
 import ResponseError from '../utils/ResponseError';
+import { IUser } from './user';
 
 export interface IApartment {
   id?: number;
@@ -18,7 +18,7 @@ export interface IApartment {
   longitude: number;
   available: boolean;
   realtorId: number;
-  realtor?: UserModel;
+  realtor?: IUser;
 }
 
 type ApartmentParam = Omit<IApartment, 'id' | 'updatedAt' | 'createdAt' | 'realtor'>;
@@ -56,10 +56,10 @@ export async function listApartments(filter: ApartmentFilter = {}): Promise<{ li
   }
 
   const result = await ApartmentDAO.findAndCountAll({
-    include: [{ model: User, attributes: { exclude: ['password'] }, as: 'realtor' }],
-    limit: filter.limit || 20,
-    offset: filter.offset || 0,
     where,
+    include: [{ model: User, attributes: { exclude: ['password'] }, as: 'realtor' }],
+    limit: Number(filter.limit || 20),
+    offset: Number(filter.offset || 0),
   });
 
   return {

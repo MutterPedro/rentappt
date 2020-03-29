@@ -5,6 +5,7 @@ import { User as UserDAO } from '../models';
 import ResponseError from '../utils/ResponseError';
 import { generateToken } from '../utils/jwt';
 import { UserModel } from 'models/User';
+import { WhereAttributeHash } from 'sequelize/types';
 
 export interface IUser {
   id?: number;
@@ -90,4 +91,29 @@ export async function getUserById(id: number, exclude: (keyof IUser)[] = []): Pr
   }
 
   return null;
+}
+
+export async function listUser(
+  filter: {
+    role?: Roles;
+    offset?: number;
+    limit?: number;
+  } = {}
+): Promise<{ list: UserWithoutPassword[]; total: number }> {
+  const where: WhereAttributeHash = {};
+  if (filter.role) {
+    where.role = filter.role;
+  }
+
+  const result = await UserDAO.findAndCountAll({
+    where,
+    attributes: { exclude: ['password'] },
+    offset: Number(filter.offset || 0),
+    limit: Number(filter.limit || 20),
+  });
+
+  return {
+    list: result.rows.map(instance => instance.get({ plain: true }) as UserWithoutPassword),
+    total: result.count,
+  };
 }

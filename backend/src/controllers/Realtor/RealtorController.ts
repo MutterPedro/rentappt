@@ -31,6 +31,8 @@ export default class RealtorController {
 
   @PUT('/apartment', ApartmentUpdateValidator)
   public updateApartment({ id, ...params }: IApartmentUpdate) {
+    //@ts-ignore
+    delete params[SESSION];
     return updateApartment(id, params);
   }
 
