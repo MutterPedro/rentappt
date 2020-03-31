@@ -177,8 +177,8 @@ describe('AdminController', () => {
           expect(res.body).toHaveProperty('list');
           expect(res.body.list).toHaveLength(limit);
           expect(User.findAndCountAll).toHaveBeenCalledWith({
-            offset: offset.toString(),
-            limit: limit.toString(),
+            offset: offset,
+            limit: limit,
             where: {},
             attributes: { exclude: ['password'] },
           });

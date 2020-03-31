@@ -62,7 +62,10 @@ export async function updatePassword(id: number, oldPassword: string, newPasswor
   await UserDAO.update({ password: newPassword }, { where: { id } });
 }
 
-export async function loginUser(email: string, password: string): Promise<string> {
+export async function loginUser(
+  email: string,
+  password: string
+): Promise<{ token: string; user: UserWithoutPassword }> {
   const instance: UserModel | null = await UserDAO.findOne({
     where: { email, password },
     attributes: { exclude: ['password'] },
@@ -75,7 +78,7 @@ export async function loginUser(email: string, password: string): Promise<string
   const user = instance.get({ plain: true }) as UserWithoutPassword;
   const token = await generateToken(user.id!);
 
-  return token;
+  return { token, user };
 }
 
 export async function getUserById(id: number, exclude: (keyof IUser)[] = []): Promise<IUser | null> {

@@ -44,6 +44,22 @@ services:
       DB_USER: tester1
       DB_PASSWORD: test
       JWT_SALT: T3ST
+  frontend:
+    container_name: frontend
+    image: rental_app_frontend
+    tty: true
+    build:
+      context: ./frontend
+      target: dev
+    ports:
+      - 3001:3000
+      - 9230:9229
+      - 35729:35729
+    volumes:
+      - ./frontend/src:/usr/app/src:delegated
+    environment:
+      REACT_APP_NODE_ENV: development
+      REACT_APP_API_ENDPOINT: "http://localhost:3000"
 
 volumes:
   mysqldata:

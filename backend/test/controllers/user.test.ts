@@ -316,7 +316,8 @@ describe('UserController', () => {
             throw err;
           }
 
-          expect(res.text.length).toBeGreaterThan(0);
+          expect(res.body).toHaveProperty('token');
+          expect(res.body).toHaveProperty('user');
           expect(User.findOne).toHaveBeenCalledWith({
             where: user,
             attributes: { exclude: ['password'] },
