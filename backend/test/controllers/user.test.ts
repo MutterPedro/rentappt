@@ -41,7 +41,11 @@ describe('UserController', () => {
             throw err;
           }
 
-          expect(res.body).toMatchObject(user);
+          expect(res.body).toHaveProperty('user');
+          expect(res.body).toHaveProperty('token');
+          expect(typeof res.body.token).toBe('string');
+          expect(res.body.token.length).toBeGreaterThan(0);
+          expect(res.body.user).toMatchObject(user);
           done();
         });
     });

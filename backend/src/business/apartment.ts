@@ -46,7 +46,7 @@ export async function listApartments(filter: ApartmentFilter = {}): Promise<{ li
     };
   }
   if (filter.rooms) {
-    where.floorAreaSize = {
+    where.rooms = {
       [Op.gte]: filter.rooms[0],
       [Op.lte]: filter.rooms[1],
     };

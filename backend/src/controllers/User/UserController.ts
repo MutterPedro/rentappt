@@ -1,7 +1,7 @@
 import { Controller, POST, PUT, DELETE, GET, PATCH } from 'digjoy';
 
 import { Roles } from '../../constants/Roles';
-import { createNewUser, updateUser, deleteUser, updatePassword, loginUser } from '../../business/user';
+import { updateUser, deleteUser, updatePassword, loginUser, createNewUserWithLogin } from '../../business/user';
 import { listApartments } from '../../business/apartment';
 import {
   IUserCreate,
@@ -22,7 +22,7 @@ import {
 export default class UserController {
   @POST('/', UserCreateValidator)
   public createUser(user: IUserCreate) {
-    return createNewUser({ ...user, role: Roles.Client });
+    return createNewUserWithLogin({ ...user, role: Roles.Client });
   }
 
   @PUT('/', UserUpdateValidator)

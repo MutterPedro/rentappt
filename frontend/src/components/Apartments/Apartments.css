@@ -1,0 +1,23 @@
+.apartments {
+  width: 80%;
+  justify-content: center;
+  align-items: center;
+  max-height: calc(100% - 85px);
+}
+
+.apartments .item {
+  text-align: start;
+}
+
+.filters {
+  display: flex !important;
+  align-items: center;
+  padding: 10px !important;
+}
+
+.filters div[role="listitem"] {
+  flex: 1;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}

@@ -4,7 +4,7 @@ import { Button, Form, Message } from "semantic-ui-react";
 import { Roles } from "../../constants/Roles";
 import "./UserForm.css";
 
-interface Fields {
+export interface Fields {
   name?: string;
   role?: string;
   email?: string;

@@ -30,6 +30,13 @@ export async function createNewUser(params: IUser): Promise<UserWithoutPassword>
   return user;
 }
 
+export async function createNewUserWithLogin(params: IUser): Promise<{ token: string; user: UserWithoutPassword }> {
+  const user = await createNewUser(params);
+  const token = await generateToken(user.id!);
+
+  return { token, user };
+}
+
 export async function updateUser(id: number, params: Partial<UserWithoutPassword>): Promise<UserWithoutPassword> {
   const result = await UserDAO.update(params, { where: { id } });
 
