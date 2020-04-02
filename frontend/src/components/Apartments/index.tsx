@@ -4,15 +4,7 @@ import {
   MapStateToProps,
   MapDispatchToPropsNonObject
 } from "react-redux";
-import {
-  Item,
-  Card,
-  List,
-  Rating,
-  Button,
-  Icon,
-  Loader
-} from "semantic-ui-react";
+import { Card, Loader, Radio } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
 
 import { IUser } from "../../types/user";
@@ -20,12 +12,26 @@ import { IApartment, IApartmentFilter } from "../../types/apartment";
 import { GlobalState } from "../../state";
 import { userListApartmentsAction } from "../../state/users/actions";
 import "./Apartments.css";
+import Filters from "./Filters";
+import ApartmentsList from "./ApartmentsList";
+import ApartmentsMap from "./ApartmentsMap";
+import { Roles } from "../../constants/Roles";
+import {
+  realtorListApartmentsAction,
+  realtorDeleteApartmentAction,
+  realtorUpdateApartmentAction,
+  realtorSetRentApartmentsAction
+} from "../../state/realtors/actions";
 
 const Apartments = ({
   user,
   apartments,
   listApartments,
-  loading
+  editApartment,
+  deleteApartment,
+  rentApartment,
+  loading,
+  reload
 }: StateProps & DispatchProps) => {
   const history = useHistory();
   const [filterState, setFilterState] = useState({
@@ -33,14 +39,17 @@ const Apartments = ({
     rooms: 5,
     price: 5
   });
+  const [showMap, setShowMap] = useState(false);
 
   useEffect(() => {
     if (!user) {
       history.push("/");
     }
 
-    listApartments();
-  }, [user, history, listApartments]);
+    if (reload) {
+      listApartments({}, user?.role);
+    }
+  }, [user, history, listApartments, reload]);
 
   const applyFilters = () => {
     const filter = {
@@ -49,87 +58,46 @@ const Apartments = ({
       price: filterState.price < 5 ? filterState.price * 100 : undefined
     };
 
-    listApartments(filter);
+    listApartments(filter, user?.role);
   };
 
   return (
     <main className="apartments">
       <Card fluid>
         <Card.Header>
-          <List horizontal size="medium" className="filters">
-            <List.Header as="h4">Filters:</List.Header>
-            <List.Item>
-              <List.Content>Size</List.Content>
-              <Rating
-                disabled={loading}
-                icon="star"
-                defaultRating={5}
-                maxRating={5}
-                onRate={(_evt, { rating }) =>
-                  setFilterState(prev => ({ ...prev, size: Number(rating) }))
-                }
-              />
-            </List.Item>
-            <List.Item>
-              <List.Content>Rooms</List.Content>
-              <Rating
-                disabled={loading}
-                icon="star"
-                defaultRating={5}
-                maxRating={5}
-                onRate={(_evt, { rating }) =>
-                  setFilterState(prev => ({ ...prev, rooms: Number(rating) }))
-                }
-              />
-            </List.Item>
-            <List.Item>
-              <List.Content>Rent Price</List.Content>
-              <Rating
-                disabled={loading}
-                icon="star"
-                defaultRating={5}
-                maxRating={5}
-                onRate={(_evt, { rating }) =>
-                  setFilterState(prev => ({ ...prev, price: Number(rating) }))
-                }
-              />
-            </List.Item>
-            <List.Item>
-              <Button
-                icon
-                basic
-                color="blue"
-                floated="right"
-                onClick={applyFilters}
-              >
-                <Icon name="filter" />
-              </Button>
-            </List.Item>
-          </List>
+          <Filters
+            loading={loading}
+            applyFilters={applyFilters}
+            onRate={(name, rate) =>
+              setFilterState(prev => ({ ...prev, [name]: rate }))
+            }
+          />
         </Card.Header>
-        {loading ? (
-          <Loader inline="centered" />
-        ) : (
-          <Card.Content>
-            <Item.Group divided>
-              {apartments.map(ap => (
-                <Item key={ap.id}>
-                  <Item.Image rounded src="https://picsum.photos/100/100" />
-                  <Item.Content verticalAlign="middle">
-                    <Item.Header as="a">{ap.name}</Item.Header>
-                    <Item.Meta>{ap.description}</Item.Meta>
-                    <Item.Description>
-                      <Item.Extra>{`Size: ${ap.floorAreaSize}m²`}</Item.Extra>
-                      <Item.Extra>{`Rooms: ${ap.rooms}`}</Item.Extra>
-                      <Item.Extra as="strong">{`Rent Price: ${ap.rentPrice}$`}</Item.Extra>
-                    </Item.Description>
-                    <Item.Extra>{`Realtor: ${ap.realtor?.name} - ${ap.realtor?.phone}`}</Item.Extra>
-                  </Item.Content>
-                </Item>
-              ))}
-            </Item.Group>
-          </Card.Content>
-        )}
+        <Card.Content>
+          {loading ? (
+            <Loader inline="centered" />
+          ) : (
+            <>
+              <Radio
+                toggle
+                label="Map"
+                checked={showMap}
+                onChange={() => setShowMap(!showMap)}
+              />
+              {showMap ? (
+                <ApartmentsMap apartments={apartments} />
+              ) : (
+                <ApartmentsList
+                  apartments={apartments}
+                  user={user}
+                  edit={editApartment}
+                  remove={deleteApartment}
+                  rent={rentApartment}
+                />
+              )}
+            </>
+          )}
+        </Card.Content>
       </Card>
     </main>
   );
@@ -139,25 +107,43 @@ interface StateProps {
   user: IUser | null;
   apartments: IApartment[];
   loading: boolean;
+  reload: boolean;
 }
 const mapStateToProps: MapStateToProps<StateProps, {}, GlobalState> = ({
-  userState
-}) => ({
-  user: userState.user,
-  apartments: userState.apartments,
-  loading: userState.loading
-});
+  userState,
+  realtorState
+}) => {
+  const state =
+    (userState?.user?.role || Roles.Client) >= Roles.Realtor
+      ? realtorState
+      : userState;
+  return {
+    user: userState.user,
+    apartments: state.apartments,
+    loading: state.loading,
+    reload: realtorState.reload
+  };
+};
 
 interface DispatchProps {
-  listApartments: (filter?: IApartmentFilter) => void;
+  listApartments: (filter?: IApartmentFilter, role?: Roles) => void;
+  editApartment: (ap: IApartment) => void;
+  deleteApartment: (id: number) => void;
+  rentApartment: (id: number) => void;
 }
 const mapDispatchToProps: MapDispatchToPropsNonObject<
   DispatchProps,
-  any
+  {}
 > = dispatch => {
   return {
-    listApartments: (filter?: IApartmentFilter) =>
-      dispatch(userListApartmentsAction(filter))
+    listApartments: (filter?: IApartmentFilter, role: Roles = Roles.Client) =>
+      role >= Roles.Realtor
+        ? dispatch(realtorListApartmentsAction(filter))
+        : dispatch(userListApartmentsAction(filter)),
+    deleteApartment: (id: number) => dispatch(realtorDeleteApartmentAction(id)),
+    editApartment: (ap: IApartment) =>
+      dispatch(realtorUpdateApartmentAction(ap)),
+    rentApartment: (id: number) => dispatch(realtorSetRentApartmentsAction(id))
   };
 };
 

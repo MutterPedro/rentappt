@@ -40,7 +40,7 @@ export async function listApartments(filter: ApartmentFilter = {}): Promise<{ li
     };
   }
   if (filter.price) {
-    where.price = {
+    where.rentPrice = {
       [Op.gte]: filter.price[0],
       [Op.lte]: filter.price[1],
     };

@@ -8,11 +8,26 @@
   align-items: center;
   padding: 0 20px;
   position: absolute;
-  justify-content: space-between;
+  justify-content: center;
   top: 0;
 }
 
-.app_header h2,
-h4 {
+.app_header h2 {
   margin: 0 !important;
+  flex: 5;
+  text-align: start;
+}
+
+.app_header h4 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 !important;
+  flex: 1;
+}
+
+.settings_icon {
+  cursor: pointer;
+  margin-left: 3px;
+  margin-right: 0 !important;
 }

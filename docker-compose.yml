@@ -60,6 +60,8 @@ services:
     environment:
       REACT_APP_NODE_ENV: development
       REACT_APP_API_ENDPOINT: "http://localhost:3000"
+      REACT_APP_GOOGLE_MAPS_API_KEY: "AIzaSyACupqP4y4ki4mM0znUaVp9Uc9tpXg4R-k"
+      REACT_APP_GOOGLE_GEOCODE_API_KEY: "AIzaSyDFQZJ8B7SGVoYRhc-YiHGcNDDvkogYJiw"
 
 volumes:
   mysqldata:

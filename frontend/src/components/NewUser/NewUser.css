@@ -1,0 +1,5 @@
+.new_apt {
+  height: calc(100% - 200px);
+  overflow-y: scroll;
+  min-width: 400px;
+}

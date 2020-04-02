@@ -2,7 +2,8 @@
   width: 80%;
   justify-content: center;
   align-items: center;
-  max-height: calc(100% - 85px);
+  max-height: calc(100vh - 200px);
+  overflow-y: scroll;
 }
 
 .apartments .item {
@@ -20,4 +21,17 @@
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
+}
+
+.filters div[role="listitem"]:last-of-type {
+  flex: 0;
+}
+
+.map_ctn {
+  margin-top: 10px;
+  height: calc(100vh - 322px);
+}
+
+.clickable {
+  cursor: pointer;
 }

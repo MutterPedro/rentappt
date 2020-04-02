@@ -29,7 +29,7 @@ const rolesOptions = [
   { key: "Admin", value: Roles.Admin }
 ];
 
-const FormExampleForm = ({
+const UserForm = ({
   fields,
   onSubmit,
   loading,
@@ -159,4 +159,4 @@ const FormExampleForm = ({
   );
 };
 
-export default FormExampleForm;
+export default UserForm;

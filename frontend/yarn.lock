@@ -1166,6 +1166,25 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
+"@react-google-maps/api@^1.8.6":
+  version "1.8.6"
+  resolved "https://registry.yarnpkg.com/@react-google-maps/api/-/api-1.8.6.tgz#0a68f5f726f2cb2551f855c9f8493c854fb2782f"
+  integrity sha512-zioXQwqc6Cuw8hOkuf4TIJdvzgXGT+h7Hj2SVFm9AHvfaYMfhNxVnID/8txaX/iDxKG83qTFwMH3AoRrNSlaFQ==
+  dependencies:
+    "@react-google-maps/infobox" "1.8.6"
+    "@react-google-maps/marker-clusterer" "1.8.6"
+    invariant "2.2.4"
+
+"@react-google-maps/infobox@1.8.6":
+  version "1.8.6"
+  resolved "https://registry.yarnpkg.com/@react-google-maps/infobox/-/infobox-1.8.6.tgz#16b00052581fcafc3ca073e73100f05cb1f13002"
+  integrity sha512-q3V1NdVzMLesW2/TEoszzLPOFXpovjrEgyXR0ftZIZBRqXWPl/YKjYUYDDSKf6GDo0d91r8K/yBqkywQBfQENQ==
+
+"@react-google-maps/marker-clusterer@1.8.6":
+  version "1.8.6"
+  resolved "https://registry.yarnpkg.com/@react-google-maps/marker-clusterer/-/marker-clusterer-1.8.6.tgz#ec26d76e890fa8a7ee7d6a810fce29a39e156e7b"
+  integrity sha512-aEJikokaGBd6hPhTXDSaQCSUaXrvSoKUmmXRFIq2sQz0hp4oJJnlkSl2Me6cV0inUaboNCK2lunKGCsgDrzOzQ==
+
 "@redux-saga/core@^1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@redux-saga/core/-/core-1.1.3.tgz#3085097b57a4ea8db5528d58673f20ce0950f6a4"
@@ -5385,7 +5404,7 @@ internal-slot@^1.0.2:
     has "^1.0.3"
     side-channel "^1.0.2"
 
-invariant@^2.2.2, invariant@^2.2.4:
+invariant@2.2.4, invariant@^2.2.2, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
@@ -8683,6 +8702,13 @@ react-error-overlay@^6.0.7:
   version "6.0.7"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.7.tgz#1dcfb459ab671d53f660a991513cb2f0a0553108"
   integrity sha512-TAv1KJFh3RhqxNvhzxj6LeT5NWklP6rDr2a0jaTfsZ5wSZWHOGeqQyejUp3xxLfPt2UpyJEcVQB/zyPcmonNFA==
+
+react-geocode@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/react-geocode/-/react-geocode-0.2.1.tgz#c9f58d979097272831a01ef0ebd89add8e15725a"
+  integrity sha512-kipHpIA1w0XbQ2x6BOpLsup9kui6yjjAaXigCtom85xiKDB2KqDlxYx7dzd68Hxd5KG27nSFiWNRLosjKVg6VQ==
+  dependencies:
+    regenerator-runtime "^0.13.3"
 
 react-is@^16.12.0, react-is@^16.6.0, react-is@^16.6.3, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6, react-is@^16.9.0:
   version "16.13.1"
