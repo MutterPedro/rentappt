@@ -1,0 +1,11 @@
+.users {
+  width: 50%;
+  justify-content: center;
+  align-items: center;
+  max-height: calc(100vh - 200px);
+  overflow-y: scroll;
+}
+
+.users .item {
+  text-align: start;
+}

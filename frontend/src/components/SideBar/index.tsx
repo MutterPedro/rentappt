@@ -35,6 +35,12 @@ const SideBar = ({ visible, user }: Props & { user: IUser | null }) => {
         </Menu.Item>
       )}
       {user?.role && user.role >= Roles.Admin && (
+        <Menu.Item as={Link} to="/users">
+          <Icon name="users" />
+          Users
+        </Menu.Item>
+      )}
+      {user?.role && user.role >= Roles.Admin && (
         <Menu.Item as={Link} to="/newUser">
           <Icon name="plus circle" />
           New User

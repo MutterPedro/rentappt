@@ -6,11 +6,11 @@ import "./UserForm.css";
 
 export interface Fields {
   name?: string;
-  role?: string;
+  role?: Roles;
   email?: string;
   password?: string;
   retypePassword?: string;
-  birth?: string;
+  birth?: Date;
   phone?: string;
 }
 interface UserFormProps {
@@ -39,15 +39,7 @@ const UserForm = ({
   defaultValues,
   children
 }: UserFormProps) => {
-  const [state, setState] = useState<Fields>({
-    name: undefined,
-    role: undefined,
-    email: undefined,
-    password: undefined,
-    retypePassword: undefined,
-    birth: undefined,
-    phone: undefined
-  });
+  const [state, setState] = useState<Fields>(defaultValues || {});
 
   const handleChange = (
     evt: React.ChangeEvent<HTMLInputElement>,
@@ -105,7 +97,7 @@ const UserForm = ({
             placeholder="Birth Date"
             type="date"
             onChange={evt => handleChange(evt, "birth")}
-            defaultValue={defaultValues?.birth}
+            defaultValue={defaultValues?.birth?.toString()}
           />
         </Form.Field>
       )}

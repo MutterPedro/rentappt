@@ -9,22 +9,27 @@ import {
 import UserForm from "../UserForm";
 import "./NewUser.css";
 import { GlobalState } from "../../state";
-import { IApartment } from "../../types/apartment";
-import { realtorCreateApartmentAction } from "../../state/realtors/actions";
+import { IUser } from "../../types/user";
+import { adminCreateUserAction } from "../../state/admins/actions";
 
-const NewUser = ({ loading, errorMessage }: StateProps & DispatchProps) => {
+const NewUser = ({
+  loading,
+  errorMessage,
+  createUser
+}: StateProps & DispatchProps) => {
   const message = errorMessage
     ? { header: "Something went wrong...", content: errorMessage }
     : undefined;
 
   return (
-    <Card className="new_apt">
+    <Card className="new_user">
       <Card.Content>
         <UserForm
-          onSubmit={data => createApartment(data as IApartment)}
+          onSubmit={data => createUser(data as IUser)}
           loading={loading}
           error={Boolean(errorMessage)}
           message={message}
+          fields={["birth", "email", "name", "password", "phone", "role"]}
         />
       </Card.Content>
     </Card>
@@ -36,22 +41,21 @@ interface StateProps {
   errorMessage?: string;
 }
 const mapStateToProps: MapStateToProps<StateProps, {}, GlobalState> = ({
-  realtorState
+  adminState
 }) => ({
-  loading: realtorState.loading,
-  errorMessage: realtorState.errorMessage
+  loading: adminState.loading,
+  errorMessage: adminState.errorMessage
 });
 
 interface DispatchProps {
-  createApartment: (ap: IApartment) => void;
+  createUser: (user: IUser) => void;
 }
 const mapDispatchToProps: MapDispatchToPropsNonObject<
   DispatchProps,
   {}
 > = dispatch => {
   return {
-    createApartment: (ap: IApartment) =>
-      dispatch(realtorCreateApartmentAction(ap))
+    createUser: (user: IUser) => dispatch(adminCreateUserAction(user))
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(NewApartment);
+export default connect(mapStateToProps, mapDispatchToProps)(NewUser);

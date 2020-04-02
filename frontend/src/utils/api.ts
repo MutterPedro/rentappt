@@ -116,3 +116,52 @@ export async function realtorSetApartmentAsRent(id: number): Promise<void> {
     }
   );
 }
+
+export async function adminListUsers(): Promise<IUser[]> {
+  const url = `${endpoint}/admin/users`;
+
+  const { data } = await axios.get<{ list: IUser[]; total: number }>(url, {
+    headers: {
+      Authorization: `Bearer ${getSessionToken()}`
+    }
+  });
+
+  return data.list;
+}
+
+export async function adminCreateUser(user: IUser): Promise<IUser> {
+  const url = `${endpoint}/admin/user`;
+
+  const { data } = await axios.post<IUser>(url, user, {
+    headers: {
+      Authorization: `Bearer ${getSessionToken()}`
+    }
+  });
+
+  return data;
+}
+
+export async function adminUpdateUser(user: Partial<IUser>): Promise<IUser> {
+  const url = `${endpoint}/admin/user`;
+  delete user.createdAt;
+  delete user.updatedAt;
+
+  const { data } = await axios.put<IUser>(url, user, {
+    headers: {
+      Authorization: `Bearer ${getSessionToken()}`
+    }
+  });
+
+  return data;
+}
+
+export async function adminDeleteUser(id: number): Promise<void> {
+  const url = `${endpoint}/admin/user`;
+
+  await axios.delete(url, {
+    data: { id },
+    headers: {
+      Authorization: `Bearer ${getSessionToken()}`
+    }
+  });
+}

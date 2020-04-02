@@ -14,6 +14,7 @@ import Header from "../Header";
 import SideBar from "../SideBar";
 import NewApartment from "../NewApartment";
 import NewUser from "../NewUser";
+import Users from "../Users";
 
 //@ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -45,6 +46,9 @@ function App() {
             </Route>
             <Route exact path="/newUser">
               <NewUser />
+            </Route>
+            <Route exact path="/users">
+              <Users />
             </Route>
           </Switch>
           <SideBar visible={menuVisible} />
